@@ -8,7 +8,7 @@ var app = express();
 app.use(cors());
 if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
-    var allowedOrigins = ['https://narrow-plane.gomix.me', 'https://www.freecodecamp.com'];
+    var allowedOrigins = ['https://bbx-whoami.glitch.com', 'https://www.freecodecamp.com'];
     var origin = req.headers.origin || '*';
     if(!process.env.XORIG_RESTRICT || allowedOrigins.indexOf(origin) > -1){
          console.log(origin);
@@ -36,39 +36,9 @@ app.route('/')
     })
 
 
-//######## 
-app.get("/test/*", function (req, res) {
-  var request = req.params.request;
-  res.type('txt').send(req.url);
-});
-
-
-//#### timestamp api
-app.route('/timestamp/:request')
-    .get(function(req, res) {
-
-      var request = req.params.request;
-      let unixDate = null;
-      let naturalDate = null;
-  
-      unixDate = new Date(request);
-      naturalDate = Math.floor(unixDate / 1000);
-      var dateObj = {"unix":unixDate.toUTCString(),"natural":naturalDate};
-
-    
-      res.send(dateObj)
-    
-
-    
-  
-  
-    });
-
-
-
 
 //#### request header  api
-app.get("/request/*", function (req, res) {
+app.get("/:request", function (req, res) {
 
 var request = req.params.request;
   var useragent = req.headers['user-agent'];
@@ -88,48 +58,13 @@ var request = req.params.request;
 
 
 
-//#### URL shortener  api
-app.route('/shorturl/:request')
-    .get(function(req, res) {
-
-var request = req.params.request;
-     
-      res.type('txt').send(request );
-    });
-
-
-
-//#### Imagesearch   api
-app.route('/imagesearch/:request')
-    .get(function(req, res) {
-
-var request = req.params.request;
-     
-      res.type('txt').send(request );
-    });
-
-
-
-//#### File metadatar  api
-app.route('/filemeta/:request')
-    .get(function(req, res) {
-
-var request = req.params.request;
-     
-      res.type('txt').send(request );
-    });
-
-
-
-
-/*
 // Respond not found to all the wrong routes
 app.use(function(req, res, next){
   res.status(404);
   res.type('txt').send('Not found');
 });
 
-*/
+
 
 // Error Middleware
 app.use(function(err, req, res, next) {
